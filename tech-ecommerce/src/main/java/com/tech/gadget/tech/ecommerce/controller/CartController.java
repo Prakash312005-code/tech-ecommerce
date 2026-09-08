@@ -10,8 +10,10 @@ import com.tech.gadget.tech.ecommerce.service.CartService;
 
 @RestController
 @RequestMapping("/api/cart")
-@CrossOrigin(origins = "http://localhost:3000")
-public class CartController {
+@CrossOrigin(origins = {
+	    "http://localhost:3000",
+	    "https://tech-gadgets-store-psi.vercel.app"
+	})public class CartController {
 
     private final CartService cartService;
 
