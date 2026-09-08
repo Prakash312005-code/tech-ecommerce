@@ -31,4 +31,8 @@ public class ProductService {
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
+      //bulk products
+    public List<Product> addProducts(List<Product> products) {
+        return productRepository.saveAll(products);
+    }
 }
