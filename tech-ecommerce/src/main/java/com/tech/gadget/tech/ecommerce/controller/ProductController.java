@@ -15,10 +15,10 @@ import com.tech.gadget.tech.ecommerce.service.ProductService;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = {
-        "http://localhost:3000",
-        "https://tech-gadget-store-two.vercel.app"
-})
+        @CrossOrigin(origins = {
+	    "http://localhost:3000",
+	    "https://tech-gadgets-store-psi.vercel.app"
+	})
 public class ProductController {
 
     private final ProductService productService;
