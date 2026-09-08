@@ -35,4 +35,30 @@ public class ProductService {
     public List<Product> addProducts(List<Product> products) {
         return productRepository.saveAll(products);
     }
+    // UPDATE PRODUCT
+    public Product updateProduct(Long id, Product product) {
+
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setOldPrice(product.getOldPrice());
+        existingProduct.setImageKey(product.getImageKey());
+        existingProduct.setCategory(product.getCategory());
+//        existingProduct.setSale(product.isSale());
+        existingProduct.setStock(product.getStock());
+
+        return productRepository.save(existingProduct);
+    }
+
+    // DELETE PRODUCT
+    public void deleteProduct(Long id) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        productRepository.delete(product);
+    }
 }
