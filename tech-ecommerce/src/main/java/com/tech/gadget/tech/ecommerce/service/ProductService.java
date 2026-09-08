@@ -53,7 +53,7 @@ public class ProductService {
         return productRepository.save(existingProduct);
     }
 
-    // DELETE PRODUCT
+    // DELETE PRODUCTs
     public void deleteProduct(Long id) {
 
         Product product = productRepository.findById(id)
