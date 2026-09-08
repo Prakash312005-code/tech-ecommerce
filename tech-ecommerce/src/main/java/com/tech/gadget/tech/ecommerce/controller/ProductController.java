@@ -44,4 +44,9 @@ public class ProductController {
     public Product addProduct(@RequestBody Product product) {
         return productService.addProduct(product);
     }
+	   // ADD PRODUCT bulk
+    @PostMapping("/bulk")
+    public List<Product> addProducts(@RequestBody List<Product> products) {
+        return productService.addProducts(products);
+    }
 }
