@@ -87,9 +87,12 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         // React frontend URL
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:3000")
-        );
+      configuration.setAllowedOrigins(
+    List.of(
+        "http://localhost:3000",
+        "https://tech-gadgets-store-psi.vercel.app"
+    )
+);
 
         // Allowed HTTP Methods
         configuration.setAllowedMethods(
