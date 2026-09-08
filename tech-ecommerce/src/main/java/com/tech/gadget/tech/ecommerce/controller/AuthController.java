@@ -14,8 +14,10 @@ import com.tech.gadget.tech.ecommerce.service.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000")
-public class AuthController {
+@CrossOrigin(origins = {
+	    "http://localhost:3000",
+	    "https://tech-gadgets-store-psi.vercel.app"
+	})public class AuthController {
 
     private final AuthService authService;
 
