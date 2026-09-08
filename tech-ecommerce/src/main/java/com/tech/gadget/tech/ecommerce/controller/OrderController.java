@@ -17,8 +17,10 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "http://localhost:3000")
-public class OrderController {
+@CrossOrigin(origins = {
+	    "http://localhost:3000",
+	    "https://tech-gadgets-store-psi.vercel.app"
+	})public class OrderController {
 
     private final OrderService orderService;
 
