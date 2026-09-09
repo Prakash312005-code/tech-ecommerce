@@ -2,14 +2,8 @@ package com.tech.gadget.tech.ecommerce.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import com.tech.gadget.tech.ecommerce.entity.Order;
 import com.tech.gadget.tech.ecommerce.entity.OrderItem;
@@ -18,9 +12,10 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = {
-	    "http://localhost:3000",
-	    "https://tech-gadgets-store-psi.vercel.app"
-	})public class OrderController {
+        "http://localhost:3000",
+        "https://tech-gadgets-store-psi.vercel.app"
+})
+public class OrderController {
 
     private final OrderService orderService;
 
@@ -28,10 +23,10 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
         this.orderService = orderService;
     }
 
-    // Place Order
-    @PostMapping("/{cartId}")
+    // PLACE ORDER
+    @PostMapping
     public Order createOrder(
-            @PathVariable String cartId,
+            Authentication authentication,
             @RequestParam String customerName,
             @RequestParam String email,
             @RequestParam String phone,
@@ -40,8 +35,10 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
             @RequestParam String state,
             @RequestParam String pincode) {
 
+        String username = authentication.getName();
+
         return orderService.createOrder(
-                cartId,
+                username,
                 customerName,
                 email,
                 phone,
@@ -52,23 +49,23 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
         );
     }
 
-    // Get all orders
-    @GetMapping("/{cartId}")
-    public List<Order> getOrders(
-            @PathVariable String cartId) {
+    // GET ORDERS
+    @GetMapping
+    public List<Order> getOrders(Authentication authentication) {
 
-        return orderService.getOrders(cartId);
+        String username = authentication.getName();
+
+        return orderService.getOrders(username);
     }
 
-    // Get one order
+    // GET ONE ORDER
     @GetMapping("/details/{orderId}")
-    public Order getOrderById(
-            @PathVariable Long orderId) {
+    public Order getOrderById(@PathVariable Long orderId) {
 
         return orderService.getOrderById(orderId);
     }
 
-    // Get order items
+    // GET ORDER ITEMS
     @GetMapping("/details/{orderId}/items")
     public List<OrderItem> getOrderItems(
             @PathVariable Long orderId) {
@@ -76,7 +73,7 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
         return orderService.getOrderItems(orderId);
     }
 
-    // Update order tracking status
+    // UPDATE STATUS
     @PutMapping("/{orderId}/status")
     public Order updateOrderStatus(
             @PathVariable Long orderId,
@@ -88,10 +85,9 @@ import com.tech.gadget.tech.ecommerce.service.OrderService;
         );
     }
 
-    // Cancel order
+    // CANCEL ORDER
     @PutMapping("/{orderId}/cancel")
-    public Order cancelOrder(
-            @PathVariable Long orderId) {
+    public Order cancelOrder(@PathVariable Long orderId) {
 
         return orderService.cancelOrder(orderId);
     }
