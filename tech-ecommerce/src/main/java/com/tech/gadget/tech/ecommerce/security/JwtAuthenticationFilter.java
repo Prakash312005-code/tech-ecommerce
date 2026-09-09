@@ -1,6 +1,7 @@
 package com.tech.gadget.tech.ecommerce.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,43 +30,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // Get Authorization header
         String authHeader = request.getHeader("Authorization");
 
-        // If no token, continue request
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Remove "Bearer " from token
         String token = authHeader.substring(7);
 
-        String username = null;
-
         try {
-            // Extract username from JWT
-            username = jwtService.extractUsername(token);
 
-        } catch (Exception e) {
-            // Invalid token
-            filterChain.doFilter(request, response);
-            return;
-        }
+            String username = jwtService.extractUsername(token);
 
-        // Validate token
-        if (username != null && jwtService.validateToken(token)) {
-
-            // Check user is not already authenticated
-            if (SecurityContextHolder
-                    .getContext()
-                    .getAuthentication() == null) {
+            if (username != null &&
+                    jwtService.validateToken(token) &&
+                    SecurityContextHolder.getContext()
+                            .getAuthentication() == null) {
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 username,
                                 null,
-                                null
+                                Collections.emptyList()
                         );
 
                 authentication.setDetails(
@@ -73,14 +60,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 .buildDetails(request)
                 );
 
-                // Set authenticated user
-                SecurityContextHolder
-                        .getContext()
+                SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
             }
+
+        } catch (Exception e) {
+            System.out.println("JWT Error: " + e.getMessage());
         }
 
-        // Continue request
         filterChain.doFilter(request, response);
     }
 }
